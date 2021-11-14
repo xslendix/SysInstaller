@@ -28,12 +28,22 @@ systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
 systemctl enable bluetooth
 
+sudo rm -rf /root/SysInstaller
+
 log "Cleaning up"
 sed -i 's/^%wheel ALL=(ALL) NOPASSWD: ALL/# %wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 sed -i 's/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 cd $pwd
 
+flatpak update
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 echo "Done!"
 reboot_to
+
+cd ~
+
+rm -rf ~/SysInstaller
 
