@@ -1,4 +1,6 @@
-. /root/SysInstaller/common.sh
+. /root/SysInstaller/util/common.sh
+
+sed -i 's/#Color/Color/g' /etc/pacman.conf
 
 log "Setting up networking"
 pacman -S networkmanager dhclient --noconfirm --needed
@@ -49,7 +51,7 @@ do
 		log "Installing $package_desc ($package_name)"
 	fi
 	sudo pacman -S $package_name --noconfirm --needed
-done < /root/SysInstaller/packages/arch.csv
+done < /root/SysInstaller/data/arch/packages.csv
 
 log "Installing microcode, if available."
 proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
@@ -92,4 +94,3 @@ chown -R $username: /home/$username/SysInstaller
 
 read -p 'Enter hostname (name of machine): ' hostname
 echo $hostname > /etc/hostname
-

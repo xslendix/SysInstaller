@@ -1,20 +1,21 @@
 #!/bin/sh
 
-. ./common.sh
+. ./util/common.sh
 
 if [ "$(whoami)" != "root" ]; then
 	echo "This script needs to be ran as root."
 	exit
 fi
 
+print_banner
+
 echo 'As a safety measure, please type "Yes, execute please"'
+
 read safety
 if [ "$safety" != "Yes, execute please" ]; then
 	log Installer cancelled.
 	exit
 fi
-
-print_banner
 
 export SCRIPT=$(readlink -f "$0")
 export SCRIPTPATH=$(dirname "$SCRIPT")
@@ -30,11 +31,25 @@ if [ -z "$distro" ]; then
 	exit 1
 fi
 
-sh preinstall.sh
-if [ "$distro" = 'arch' ]; then
-	arch-chroot /mnt /root/SysInstaller/1_setup_arch.sh
-	username=$(cat /mnt/root/SysInstaller/.username)
-	arch-chroot /mnt /usr/bin/runuser -u $username -- /home/$username/SysInstaller/2_user_arch.sh
-	arch-chroot /mnt /root/SysInstaller/3_post_setup_arch.sh
+export syschroot=
+
+[ "$distro" = 'arch' ] && syschroot=arch-chroot
+
+if [ -z "$syschroot" ]; then
+    loge "No adequate chroot command detected. Exiting."
+    exit 1
 fi
 
+sh data/$distro/preinstall.sh
+log "Preinstall stage done"
+$syschroot /mnt /root/SysInstaller/data/$distro/setup.sh
+
+username=$(cat /mnt/root/SysInstaller/.username)
+$syschroot /mnt /usr/bin/runuser -u $username -- /home/$username/SysInstaller/data/$distro/user.sh
+log "User stage done"
+$syschroot /mnt /root/SysInstaller/data/$distro/postinstall.sh
+log "Postinstall stage done"
+
+echo -e "\nInstallation done! Please remove the installation medium and press ENTER to reboot."
+read
+reboot_to

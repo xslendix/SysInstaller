@@ -1,4 +1,4 @@
-. /root/SysInstaller/common.sh
+. /root/SysInstaller/util/common.sh
 
 log "GRUB EFI install"
 
@@ -27,6 +27,7 @@ systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
 systemctl enable bluetooth
+systemctl enable tlp
 
 sudo rm -rf /root/SysInstaller
 
@@ -46,4 +47,3 @@ reboot_to
 cd ~
 
 rm -rf ~/SysInstaller
-

@@ -34,6 +34,8 @@ log() {
 
 reboot_to() {
 	[ -n "$@" ] && echo "$@"
+	echo "Rebooting in 5" && sleep 1
+	echo "Rebooting in 4" && sleep 1
 	echo "Rebooting in 3" && sleep 1
 	echo "Rebooting in 2" && sleep 1
 	echo "Rebooting in 1" && sleep 1
