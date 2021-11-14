@@ -33,7 +33,10 @@ fi
 
 export syschroot=
 
-[ "$distro" = 'arch' ] && syschroot=arch-chroot
+if [ "$distro" = 'arch' ]; then
+    syschroot=arch-chroot
+    pacman -Sy
+fi
 
 if [ -z "$syschroot" ]; then
     loge "No adequate chroot command detected. Exiting."
