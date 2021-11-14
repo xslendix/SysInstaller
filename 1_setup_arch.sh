@@ -76,6 +76,11 @@ elif lspci | grep -E "Integrated Graphics Controller"; then
 	pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils --needed --noconfirm
 fi
 
+if [ "$(cat /sys/class/dmi/id/chassis_type)" -eq 3 ]; then
+	log "Installing TLP"
+	pacman -S --noconfirm tlp
+fi
+
 read -p 'Enter username: ' username
 echo $username > $HOME/SysInstaller/.username
 
