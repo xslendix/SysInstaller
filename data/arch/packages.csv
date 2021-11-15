@@ -6,6 +6,8 @@ xorg-drivers,
 xorg-xkill,
 xorg-xinit,
 xterm,X11 terminal emulator
+polkit,Polkit
+polkit-kde-agent,
 plasma-desktop,KDE Plasma
 alsa-plugins,Audio plugins
 alsa-utils,Audio utils
@@ -139,4 +141,4 @@ zsh-autosuggestions,
 curl,
 firefox,
 packagekit-qt5,
-flatpak
+flatpak,
