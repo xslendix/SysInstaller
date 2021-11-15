@@ -43,6 +43,14 @@ pacman -Sy --noconfirm
 
 log "Installing packages"
 
+log "Installing polkit"
+sudo pacman -S --noconfirm --needed polkit
+log "Installing packagekit"
+sudo pacman -S --noconfirm --needed packagekit
+
+sudo systemctl enable polkit
+sudo systemctl start polkit
+
 while IFS=, read -r package_name package_desc
 do
 	if [ -z "$package_desk"]; then 
